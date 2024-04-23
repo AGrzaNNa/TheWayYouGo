@@ -1,0 +1,163 @@
+body{
+    background-color: rgb(46, 10, 46);
+    z-index: 0;
+}
+
+.container {
+    width: 100vw;
+    height: 50vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* To center align items horizontally */
+    position: relative;
+}
+
+h2 {
+    position: absolute;
+    top: 0;
+    margin: -22px; /* Remove default margin */
+    left: 50px;
+    color: #ffffff;
+    text-shadow: -1px -1px 1px rgba(225, 225, 225, 0.75);
+    font-size: 45px;
+
+}
+
+.special{
+    text-align: right;
+    position: absolute;
+    top: 0;
+    margin: -22px; /* Remove default margin */
+    right: 150px;
+    color: #ffffff;
+    text-shadow: -1px -1px 1px rgba(225, 225, 225, 0.75);
+    font-size: 45px;
+
+}
+.items {
+    display: flex;
+    flex-basis: 300px;
+    position: relative;
+    width: 100vw; /* To allow absolute positioning within it */
+    max-width: 1200px; /* Set a maximum width for the items */
+}
+
+
+.description {
+    color: whitesmoke;
+    text-align: center;
+    font-size: 30px;
+    padding-left: 20px;
+    font-family: 'Potta One', sans-serif;
+    font-weight: 400;
+    width: 520px;
+    margin-top: 80px;
+}
+
+
+.image, .image2, .image3 {
+    width: 620px;
+    height: 420px;
+    margin-top: -50px;
+    margin-left: 70px;
+    top: calc(100% + 20px);
+}
+
+
+
+@media screen and (max-width: 1202px) {
+    .items {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2  {
+        position: static;
+        text-align: center;
+        margin: 20px 0;
+        left: auto;
+        font-size: 30px;
+        order: 1;
+    }
+
+    .special{
+        position: static;
+        text-align: center;
+        margin: 20px 0;
+        left: auto;
+        font-size: 30px;
+        order: 1;
+    }
+
+    .image {
+        position: static;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 320px;
+        height: 220px;
+    }
+
+    .description {
+        order: 1; /* Change the order of description */
+        margin-top: 20px;
+        font-size: 20px;
+    }
+
+}
+
+.home{
+    display: flex;
+    height: 100dvh;
+    background: linear-gradient(to top, #ffffff 30%, #efb180);
+}
+.home img{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.home.title{
+    position: absolute;
+}
+.title {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 120px;
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+.section {
+    width: 100vw;
+    height: 50vh;
+    background: scroll;
+    background-color: rgb(46, 10, 46);
+    min-height: 420px;
+    z-index: 100;
+    position: relative;
+}
+.section {
+    width: 100vw;
+    height: 50vh;
+    background: scroll;
+    background-color: rgb(46, 10, 46);
+    min-height: 420px;
+    z-index: 100;
+    position: relative;
+}
+.des {
+    color: whitesmoke;
+    font-size: 30px;
+    font-family: 'Potta One', sans-serif;
+    font-weight: 400;
+    width: 80%;
+    margin-top: -30px;
+}
+.d {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
