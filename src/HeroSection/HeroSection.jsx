@@ -18,6 +18,10 @@ function Hero() {
                 <img src={mount2} className='mount2'/>
                 <img src={mount1} className='mount1'/>
                 <h1 className='title'>The Way You Go</h1>
+                <div className="logsign">
+                    <button className="login-button">Login</button>
+                    <button className="signin-button">Signin</button>
+                </div>
                 <img src={bush1} className='bush2'/>
                 <img src={bush2} className='bush1'/>
             </section>

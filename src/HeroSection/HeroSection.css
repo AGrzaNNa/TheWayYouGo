@@ -45,7 +45,7 @@ h2 {
 
 .description {
     color: whitesmoke;
-    text-align: center;
+    text-align: justify;
     font-size: 30px;
     padding-left: 20px;
     font-family: 'Potta One', sans-serif;
@@ -107,6 +107,7 @@ h2 {
 
 .home{
     display: flex;
+    position: relative;
     height: 100dvh;
     background: linear-gradient(to top, #ffffff 30%, #efb180);
 }
@@ -138,15 +139,7 @@ h2 {
     z-index: 100;
     position: relative;
 }
-.section {
-    width: 100vw;
-    height: 50vh;
-    background: scroll;
-    background-color: rgb(46, 10, 46);
-    min-height: 420px;
-    z-index: 100;
-    position: relative;
-}
+
 .des {
     color: whitesmoke;
     font-size: 30px;
@@ -160,4 +153,34 @@ h2 {
     flex-direction: column;
     align-items: center;
     text-align: center;
+}
+
+.logsign {
+    display: flex;
+    justify-content: space-between; /* Równomierne rozłożenie przycisków */
+    width: 320px;
+    height: 60px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-button, .signin-button {
+    width: 140px;
+    height: 60px;
+    margin-top: 10px;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-button {
+    transition-duration: 0.4s;
+}
+
+.login-button:hover {
+    background-color: rgba(207, 22, 22, 0.95); /* Czerwony */
+    color: white;
 }
