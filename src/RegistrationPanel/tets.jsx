@@ -1,16 +1,9 @@
-import './Registration.css';
-import mount2 from '../HeroSection/assets/mount2.png';
-import logo from './logo.png';
-
-//MANTINE
-
 import {
 	UnstyledButton,
 	Checkbox,
 	Text,
 	Image,
 	SimpleGrid,
-	Button,
 } from '@mantine/core';
 import { useUncontrolled } from '@mantine/hooks';
 // import icons from './icons';
@@ -84,51 +77,7 @@ export function ImageCheckboxes() {
 	const items = mockdata.map((item) => (
 		<ImageCheckbox {...item} key={item.title} />
 	));
-	return (
-		<SimpleGrid
-			style={{ marginLeft: '52px' }}
-			cols={{ base: 1, sm: 2, md: 4 }}
-		>
-			{items}
-		</SimpleGrid>
-	);
+	return <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }}>{items}</SimpleGrid>;
 }
 
-function Registration() {
-	return (
-		<>
-			<div className="mother">
-				{/*<img src={mount2} className="mount2" />*/}
-				<img src={logo} className="logo" />
-				<div className="Panel">
-					<div id="div1">
-						<p className="title1">Input Your Personal Data</p>
-					</div>
-					<div id="div2">
-						<form className="form1">
-							<input type="text" placeholder="UserName" />
-							<input type="text" placeholder="E-mail" />
-							<input type="password" placeholder="Password" />
-							<input
-								type="password"
-								placeholder="Confirm Password"
-							/>
-						</form>
-					</div>
-					<div id="div3"></div>
-					<div id="div4">
-						<p className="title2">Choose your preferences</p>
-						<ImageCheckboxes />
-					</div>
-					<div id="div5">div</div>
-					<div id="div6">div</div>
-					<div id="div7">
-						<button>SUBMIT</button>
-					</div>
-				</div>
-			</div>
-		</>
-	);
-}
-
-export default Registration;
+<ImageCheckboxes />;
