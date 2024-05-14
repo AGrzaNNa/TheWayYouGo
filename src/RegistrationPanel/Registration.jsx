@@ -109,7 +109,7 @@ function Registration() {
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 		if (password !== confirmPassword) {
-			console.log('Passwords do not match');
+			console.log('Passwordss do not match');
 		}
 	};
 
