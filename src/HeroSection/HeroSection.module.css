@@ -12,7 +12,7 @@ body{
     position: relative;
 }
 
-h2 {
+.h2 {
     position: absolute;
     top: 0;
     margin: -22px; /* Remove default margin */
@@ -71,7 +71,7 @@ h2 {
         align-items: center;
     }
 
-    h2  {
+    .h2  {
         position: static;
         text-align: center;
         margin: 20px 0;

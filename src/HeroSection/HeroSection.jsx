@@ -1,4 +1,4 @@
-import './HeroSection.css';
+import './HeroSection.module.css';
 import image from './assets/image.png';
 import image2 from './assets/image2.png';
 import image3 from './assets/image3.png';
@@ -28,7 +28,7 @@ function Hero() {
             <div className="section">
                 <div className="container">
                     <div className="items">
-                        <h2>Encourage You Journay</h2>
+                        <h2 className='h2'>Encourage You Journay</h2>
                         <p className="description">
                             "Embark on Your Journey of Self-Discovery! Explore new horizons,
                             gain insights, and grow every step of the way. Join our community
@@ -55,7 +55,7 @@ function Hero() {
             <div className="section">
                 <div className="container">
                     <div className="items">
-                        <h2>Share With Others</h2>
+                        <h2 className='h2'>Share With Others</h2>
                         <p className="description">
                             "Post Your toughts give star to places u been share your experience with others.
                             Show what u got Dont let it slide without any feelings!"
