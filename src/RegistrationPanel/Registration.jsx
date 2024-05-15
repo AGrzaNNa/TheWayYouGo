@@ -1,8 +1,10 @@
 import './Registration.css';
 import mount2 from '../HeroSection/assets/mount2.png';
 import logo from './icons/logo.png';
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
+import { supabase } from './Client';
+import { addUserToUsersTable } from './Client';
 
 //MANTINE
 
@@ -20,18 +22,19 @@ import city from './icons/city.png';
 import mount from './icons/mountain.png';
 import winter from './icons/winter.png';
 import sea from './icons/sea.png';
-import image from "../HeroSection/assets/image.png";
+import image from '../HeroSection/assets/image.png';
+import { Link } from 'react-router-dom';
 
 export function ImageCheckbox({
-								  checked,
-								  defaultChecked,
-								  onChange,
-								  title,
-								  description,
-								  className,
-								  image,
-								  ...others
-							  }) {
+	checked,
+	defaultChecked,
+	onChange,
+	title,
+	description,
+	className,
+	image,
+	...others
+}) {
 	const [value, handleChange] = useUncontrolled({
 		value: checked,
 		defaultValue: defaultChecked,
@@ -59,7 +62,9 @@ export function ImageCheckbox({
 
 			<Checkbox
 				checked={value}
-				onChange={() => {}}
+				onChange={(event) => {
+					console.log(title, event.target.checked);
+				}}
 				tabIndex={-1}
 				styles={{ input: { cursor: 'pointer' } }}
 			/>
@@ -88,7 +93,7 @@ export function ImageCheckboxes() {
 	));
 	return (
 		<SimpleGrid
-			style={{ padding:'10px', background: 'white'}}
+			style={{ padding: '10px', background: 'white' }}
 			cols={{ base: 1, sm: 2, md: 4 }}
 		>
 			{items}
@@ -97,7 +102,6 @@ export function ImageCheckboxes() {
 }
 
 function Registration() {
-
 	const [latitude, setLatitude] = useState(null);
 	const [longitude, setLongitude] = useState(null);
 	const [error, setError] = useState(null);
@@ -106,62 +110,93 @@ function Registration() {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
-	const handleFormSubmit = (e) => {
+	const handleFormSubmit = async (e) => {
 		e.preventDefault();
 		if (password !== confirmPassword) {
-			console.log('Passwordss do not match');
+			console.log('Passwords do not match');
 		}
-	};
-
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			position => {
-				setLatitude(position.coords.latitude);
-				setLongitude(position.coords.longitude);
-			},
-			err => {
-				setError(err.message);
-			}
+		const { data, error } = await addUserToUsersTable(
+			username,
+			email,
+			password,
 		);
-	}, []);
+	};
 
 	return (
 		<>
 			<div className="mother">
 				<img src={logo} className="logo" />
-				<div className="container">
+				<div className="Container">
 					<div id="div1">
 						<p className="title1">Input Your Personal Data</p>
 					</div>
 					<div id="div2">
 						<form className="form1" onSubmit={handleFormSubmit}>
-							<input type="text" placeholder="UserName" id="SetUserName" onChange={(e) => setUsername(e.target.value)}/>
-							<input type="text" placeholder="E-mail" id="setEmail" onChange={(e) => setEmail(e.target.value)}/>
-							<input type="password" placeholder="Password" id="setPassword" onChange={(e) => setPassword(e.target.value)}/>
-							<input type="password" placeholder="Confirm Password" id="SetConfirmPassword" onChange={(e) => setConfirmPassword(e.target.value)}/>
-							<button style={{
-								marginTop: '20px',
-								height: '40px',
-								borderRadius: '20px',
-								borderColor: "transparent"
-							}} type="submit">Check
+							<input
+								type="text"
+								placeholder="UserName"
+								id="SetUserName"
+								onChange={(e) => setUsername(e.target.value)}
+							/>
+							<input
+								type="text"
+								placeholder="E-mail"
+								id="setEmail"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
+							<input
+								type="password"
+								placeholder="Password"
+								id="setPassword"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+							<input
+								type="password"
+								placeholder="Confirm Password"
+								id="SetConfirmPassword"
+								onChange={(e) =>
+									setConfirmPassword(e.target.value)
+								}
+							/>
+							<button
+								style={{
+									marginTop: '20px',
+									height: '40px',
+									borderRadius: '20px',
+									borderColor: 'transparent',
+								}}
+								type="submit"
+								className="submit"
+							>
+								Check Data
 							</button>
 						</form>
 					</div>
 					<div id="div3">
-						<img src={image} style={{width: '510px'}} className="image"/>
+						<img
+							src={image}
+							style={{ width: '510px' }}
+							className="image"
+						/>
 					</div>
 					<div id="div4">
 						<p className="title2">Choose your preferences</p>
-						<ImageCheckboxes/>
+						<ImageCheckboxes />
 					</div>
-					<div id="div5">
-						{latitude && longitude && <p>Location: {latitude}, {longitude}</p>}
-						{error && <p>Error: {error}</p>}
-					</div>
-					<div id="div6">div</div>
 					<div id="div7">
-						<button className='submit'>SUBMIT</button>
+						<Link to="/dashboard">
+							<button
+								className="submit"
+								style={{
+									height: '100px',
+									width: '320px',
+									borderRadius: '20px',
+									position: 'sticky',
+								}}
+							>
+								Create Account
+							</button>
+						</Link>
 					</div>
 				</div>
 			</div>

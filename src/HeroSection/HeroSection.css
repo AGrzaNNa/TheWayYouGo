@@ -1,4 +1,4 @@
-body{
+.body{
     background-color: rgb(46, 10, 46);
     z-index: 0;
 }
@@ -153,34 +153,4 @@ body{
     flex-direction: column;
     align-items: center;
     text-align: center;
-}
-
-.logsign {
-    display: flex;
-    justify-content: space-between; /* Równomierne rozłożenie przycisków */
-    width: 320px;
-    height: 60px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.login-button, .signin-button {
-    width: 140px;
-    height: 60px;
-    margin-top: 10px;
-    background-color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.login-button {
-    transition-duration: 0.4s;
-}
-
-.login-button:hover {
-    background-color: rgba(207, 22, 22, 0.95); /* Czerwony */
-    color: white;
 }
