@@ -73,7 +73,7 @@ function Hero() {
 							Start planning today and turn your travel dreams
 							into unforgettable experiences!"
 						</p>
-						<Link to="/register">
+						<Link to="/registration">
 							<button className="submit">Join US !</button>
 						</Link>
 					</div>

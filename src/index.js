@@ -8,14 +8,16 @@ import Registration from './RegistrationPanel/Registration';
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import Dashboard from './DashBoard/DashBoard';
+import LogIn from './LogInPanel/LogIn';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<MantineProvider>
 		<Router>
 			<Routes>
-				<Route path="/" exact element={<Hero />} />
-				<Route path="/register" element={<Registration />} />
+				<Route path="/Hero" exact element={<Hero />} />
+				<Route path="/registration" element={<Registration />} />
+				<Route path="/" element={<LogIn />} />
 				<Route path="/dashboard" element={<Dashboard />} />
 			</Routes>
 		</Router>

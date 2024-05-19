@@ -7,7 +7,12 @@ const supabaseKey =
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export const addUserToUsersTable = async (username, email, password) => {
+export const addUserToUsersTable = async (
+	username,
+	email,
+	password,
+	preferences,
+) => {
 	try {
 		const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -16,6 +21,7 @@ export const addUserToUsersTable = async (username, email, password) => {
 				username: username,
 				email: email,
 				password: hashedPassword,
+				preferences: preferences,
 			},
 		]);
 
