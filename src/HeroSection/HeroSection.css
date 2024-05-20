@@ -3,7 +3,7 @@
     z-index: 0;
 }
 
-.container {
+.Con {
     width: 100vw;
     height: 50vh;
     display: flex;
@@ -54,7 +54,6 @@
     margin-top: 80px;
 }
 
-
 .image, .image2, .image3 {
     width: 620px;
     height: 420px;
@@ -63,48 +62,13 @@
     top: calc(100% + 20px);
 }
 
-
-
-@media screen and (max-width: 1202px) {
-    .items {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .h2  {
-        position: static;
-        text-align: center;
-        margin: 20px 0;
-        left: auto;
-        font-size: 30px;
-        order: 1;
-    }
-
-    .special{
-        position: static;
-        text-align: center;
-        margin: 20px 0;
-        left: auto;
-        font-size: 30px;
-        order: 1;
-    }
-
-    .image {
-        position: static;
-        margin-top: 10px;
-        width: 100%;
-        max-width: 320px;
-        height: 220px;
-    }
-
-    .description {
-        order: 1; /* Change the order of description */
-        margin-top: 20px;
-        font-size: 20px;
-    }
-
+.des {
+    color: whitesmoke;
+    font-size: 30px;
+    font-family: 'Potta One', sans-serif;
+    font-weight: 400;
+    margin-top: -30px;
 }
-
 .home{
     display: flex;
     position: relative;
@@ -140,17 +104,69 @@
     position: relative;
 }
 
-.des {
-    color: whitesmoke;
-    font-size: 30px;
-    font-family: 'Potta One', sans-serif;
-    font-weight: 400;
-    width: 80%;
-    margin-top: -30px;
-}
 .d {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
+
+
+@media screen and (max-width: 1200px) {
+    .home{
+        height: 100vh;
+    }
+    .title {
+        font-size: 40px;
+    }
+.items {
+    flex-direction: column;
+    align-items: center;
+}
+
+.h2  {
+    position: static;
+    text-align: center;
+    margin: 20px 0;
+    left: auto;
+    font-size: 30px;
+    order: 1;
+}
+
+.special{
+    position: static;
+    text-align: center;
+    margin: 20px 0;
+    left: auto;
+    font-size: 30px;
+    order: 1;
+}
+
+.image {
+    position: static;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 320px;
+    height: 220px;
+}
+
+.description {
+    order: 1; /* Change the order of description */
+    margin-top: 20px;
+    font-size: 15px;
+    width: 100%;
+}
+.des {
+    color: whitesmoke;
+    font-size: 15px;
+    font-family: 'Potta One', sans-serif;
+    font-weight: 400;
+    width: 100%;
+    margin-top: -30px;
+}
+.section{
+    height: 90vh;
+}
+}
+
+

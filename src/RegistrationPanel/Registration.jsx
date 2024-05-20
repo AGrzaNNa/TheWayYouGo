@@ -92,25 +92,34 @@ function Registration() {
 
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
+		let status = true;
 		if (password !== confirmPassword) {
 			console.log('Passwords do not match');
+			status = false;
 		}
 		if (!username) {
 			console.log('Username is required');
+			status = false;
 		}
 		if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
 			console.log('Invalid email format');
+			status = false;
 		}
+		return status;
 	};
 
 	const CreateAccount = async (e) => {
+		const status = handleFormSubmit(e);
 		e.preventDefault();
-		const { data, error } = await addUserToUsersTable(
-			username,
-			email,
-			password,
-			preferences,
-		);
+		console.log('data', status);
+		if (status === 'true') {
+			const { data, error } = await addUserToUsersTable(
+				username,
+				email,
+				password,
+				preferences,
+			);
+		}
 	};
 
 	return (
@@ -164,11 +173,7 @@ function Registration() {
 						</form>
 					</div>
 					<div id="div3">
-						<img
-							src={image}
-							style={{ width: '510px' }}
-							className="image"
-						/>
+						<img src={image} className="img" />
 					</div>
 					<div id="div4">
 						<p className="title2">Choose your preferences</p>

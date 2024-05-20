@@ -23,7 +23,7 @@ function Hero() {
 				<img src={bush2} className="bush1" />
 			</section>
 			<div className="section">
-				<div className="container">
+				<div className="Con">
 					<div className="items">
 						<h2 className="h2">Encourage You Journay</h2>
 						<p className="description">
@@ -38,7 +38,7 @@ function Hero() {
 				</div>
 			</div>
 			<div className="section">
-				<div className="container">
+				<div className="Con">
 					<div className="items">
 						<img src={image2} className="image" alt="React Logo" />
 						<h2 className="special">Plan Your Moves</h2>
@@ -53,7 +53,7 @@ function Hero() {
 				</div>
 			</div>
 			<div className="section">
-				<div className="container">
+				<div className="Con">
 					<div className="items">
 						<h2 className="h2">Share With Others</h2>
 						<p className="description">
@@ -66,7 +66,7 @@ function Hero() {
 				</div>
 			</div>
 			<div className="section">
-				<div className="container">
+				<div className="Con">
 					<div className="d">
 						<img src={image4} className="image" alt="React Logo" />
 						<p className="des">

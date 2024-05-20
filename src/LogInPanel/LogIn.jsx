@@ -1,28 +1,33 @@
 import './LogIn.css';
 import logo from '../RegistrationPanel/icons/logo.png';
-
 import image from '../HeroSection/assets/image.png';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { LoginUserNameFromTable, supabase } from './client';
+import { addUserToUsersTable } from '../RegistrationPanel/Client';
 
 function LogIn() {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
 
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
+		const { data, error } = await LoginUserNameFromTable(
+			username,
+			email,
+			password,
+		);
 	};
-
 	return (
 		<>
-			<div className="mother">
-				<img src={logo} className="logoLogin" />
-				<div className="Container">
-					<div id="div1">
+			<div className="Mother">
+				<img src={logo} className="logoLogin" alt="logo" />
+				<div className="container">
+					<div className="div1">
 						<p className="title1">Welcome Back Traveler !</p>
 					</div>
-					<div id="div2">
+					<div className="div2">
 						<form className="form1" onSubmit={handleFormSubmit}>
 							<input
 								type="text"
@@ -42,31 +47,31 @@ function LogIn() {
 								id="setPassword"
 								onChange={(e) => setPassword(e.target.value)}
 							/>
-							<Link to="/dashboard">
-								<button
-									style={{
-										marginTop: '20px',
-										height: '40px',
-										borderRadius: '20px',
-										borderColor: 'transparent',
-									}}
-									type="submit"
-									className="submit"
-								>
-									Log In
-								</button>
-							</Link>
+							<button
+								style={{
+									marginTop: '20px',
+									height: '40px',
+									borderRadius: '20px',
+									borderColor: 'transparent',
+								}}
+								type="submit"
+								className="submit"
+							>
+								Log In
+							</button>
 						</form>
 					</div>
-					<div id="div3">
+					<div className="div3">
 						<img
 							src={image}
-							style={{ width: '510px' }}
-							className="image"
+							alt="image"
+							style={{ width: '510px', marginBottom: '20px' }}
+							className="img2"
 						/>
 					</div>
 				</div>
 			</div>
+			{error && <p>{error}</p>}
 		</>
 	);
 }
