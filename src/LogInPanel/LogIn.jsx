@@ -2,22 +2,24 @@ import './LogIn.css';
 import logo from '../RegistrationPanel/icons/logo.png';
 import image from '../HeroSection/assets/image.png';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LoginUserNameFromTable, supabase } from './client';
-import { addUserToUsersTable } from '../RegistrationPanel/Client';
-
 function LogIn() {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const navigate = useNavigate();
 
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
-		const { data, error } = await LoginUserNameFromTable(
-			username,
-			email,
-			password,
-		);
+		const value = await LoginUserNameFromTable(username, email, password);
+		console.log('data', value);
+		if (value === '0') {
+			console.log('blad');
+		} else {
+			navigate(`/dashboard/${value}`);
+		}
 	};
 	return (
 		<>

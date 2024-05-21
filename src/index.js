@@ -15,10 +15,10 @@ root.render(
 	<MantineProvider>
 		<Router>
 			<Routes>
-				<Route path="/Hero" exact element={<Hero />} />
+				<Route path="/" exact element={<Hero />} />
 				<Route path="/registration" element={<Registration />} />
-				<Route path="/" element={<LogIn />} />
-				<Route path="/dashboard" element={<Dashboard />} />
+				<Route path="/logIn" element={<LogIn />} />
+				<Route path="/dashboard/:userId" element={<Dashboard />} />
 			</Routes>
 		</Router>
 	</MantineProvider>,

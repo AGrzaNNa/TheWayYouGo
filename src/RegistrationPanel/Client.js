@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import bcrypt from 'bcryptjs';
+import { sha256 } from 'js-sha256';
 
 const supabaseUrl = 'https://pihehysekpxwafqzozmg.supabase.co';
 const supabaseKey =
@@ -14,13 +14,11 @@ export const addUserToUsersTable = async (
 	preferences,
 ) => {
 	try {
-		const hashedPassword = await bcrypt.hash(password, 10);
-
 		const { data, error } = await supabase.from('User').insert([
 			{
 				username: username,
 				email: email,
-				password: hashedPassword,
+				password: sha256(password),
 				preferences: preferences,
 			},
 		]);
@@ -30,6 +28,7 @@ export const addUserToUsersTable = async (
 			return { error };
 		}
 		console.log('User data inserted:');
+		window.location.href = 'http://localhost:3000/logIn';
 		return { data };
 	} catch (error) {
 		console.error('Error hashing password:', error);

@@ -109,17 +109,20 @@ function Registration() {
 	};
 
 	const CreateAccount = async (e) => {
-		const status = handleFormSubmit(e);
 		e.preventDefault();
-		console.log('data', status);
-		if (status === 'true') {
-			const { data, error } = await addUserToUsersTable(
-				username,
-				email,
-				password,
-				preferences,
-			);
-		}
+		const status = handleFormSubmit(e);
+		status.then(async (status) => {
+			if (status) {
+				const { data, error } = await addUserToUsersTable(
+					username,
+					email,
+					password,
+					preferences,
+				);
+			} else {
+				alert('Niepoprawne dane');
+			}
+		});
 	};
 
 	return (
