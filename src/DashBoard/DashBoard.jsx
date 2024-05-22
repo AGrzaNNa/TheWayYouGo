@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './DashBoard.css';
 import { useParams } from 'react-router-dom';
+import { Context } from '../index.js';
 import walking from './icons/walking.png';
 import driving from './icons/driving.png';
 import cycling from './icons/cycling.png';
+
 const Dashboard = () => {
-	const { userId } = useParams();
-	console.log('data', userId);
+	const [user] = useContext(Context);
+	console.log(user);
 	const [location, setLocation] = useState({});
+
 	useEffect(() => {
 		const map = L.map('map').setView([51.505, -0.09], 12);
 
@@ -19,7 +22,7 @@ const Dashboard = () => {
 				'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 		}).addTo(map);
 
-		//show what u clicked on
+		// Show what you clicked on
 		const popup = L.popup();
 		function onMapClick(e) {
 			popup
@@ -29,19 +32,19 @@ const Dashboard = () => {
 		}
 		map.on('click', onMapClick);
 
-		// Pobieranie aktualnej lokalizacji
+		// Getting current location
 		if ('geolocation' in navigator) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
 					const { latitude, longitude } = position.coords;
 					setLocation({ lat: latitude, lng: longitude });
 
-					// Ustawianie widoku mapy na aktualnej lokalizacji
+					// Set map view to current location
 					map.setView([latitude, longitude], 13);
-					// Dodanie znacznika na aktualnej lokalizacji
+					// Add marker at current location
 					const marker = L.marker([latitude, longitude]).addTo(map);
 
-					// Dodanie interaktywnego okna po kliknięciu na markerze
+					// Add interactive popup on marker click
 					marker.bindPopup('<b>You are here</b><br>').openPopup();
 				},
 				(error) => {
@@ -75,7 +78,7 @@ const Dashboard = () => {
 							}}
 						>
 							<p style={{ width: '100%', textAlign: 'center' }}>
-								Hello :> User ID:{userId}
+								Hello :> User ID: {user} {/* Assuming user has an id property */}
 							</p>
 						</div>
 						<a style={{ textAlign: 'center' }}>
@@ -126,7 +129,7 @@ const Dashboard = () => {
 							</label>
 						</form>
 						<div>
-							<p>Your Buget</p>
+							<p>Your Budget</p>
 							<input />
 						</div>
 					</div>

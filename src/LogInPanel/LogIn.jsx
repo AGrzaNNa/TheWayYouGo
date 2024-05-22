@@ -1,24 +1,29 @@
 import './LogIn.css';
 import logo from '../RegistrationPanel/icons/logo.png';
 import image from '../HeroSection/assets/image.png';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginUserNameFromTable, supabase } from './client';
+import { Context } from '../index';
+
+
 function LogIn() {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const [, setUser] = useContext(Context);
 
-	const handleFormSubmit = async (e) => {
-		e.preventDefault();
+	const handleFormSubmit = async (event) => {
+		event.preventDefault();
 		const value = await LoginUserNameFromTable(username, email, password);
-		console.log('data', value);
-		if (value === '0') {
-			console.log('blad');
+		if (value) {
+			console.log('User found. User ID:', value);
+			setUser(value);
+			navigate('/dashboard')
 		} else {
-			navigate(`/dashboard/${value}`);
+			console.log('User not found or error occurred.');
 		}
 	};
 	return (
