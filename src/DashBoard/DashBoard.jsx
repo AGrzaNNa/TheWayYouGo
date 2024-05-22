@@ -176,7 +176,17 @@ const Dashboard = () => {
 							marginTop: '20px',
 						}}
 					>
-						<button onClick={handleButtonClick}>Process</button>
+						<button
+							style={{
+								marginTop: '10px',
+								borderRadius: '20px',
+								height: '40px',
+								width: '140px',
+							}}
+							onClick={handleButtonClick}
+						>
+							Process
+						</button>
 					</div>
 				</div>
 				<div className="g3">
