@@ -17,12 +17,11 @@ export const LoginUserNameFromTable = async (username, email, password) => {
 			.eq('password', sha256(password));
 		if (error) {
 			console.error('Error fetching user data:', error);
-			return '0';
+			return;
 		}
 		console.log('adtda',User[0].id);
 		return User[0].id;
 	} catch (error) {
 		console.error('Wrong password;', error);
-		return '0';
 	}
 };

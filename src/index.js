@@ -13,7 +13,7 @@ import LogIn from './LogInPanel/LogIn';
 export const Context = createContext();
 
 function Index() {
-	const [user, setUser] = useState({ user: 0 });
+	const [user, setUser] = useState(null);
 
 	return (
 		<Context.Provider value={[user, setUser]}>
