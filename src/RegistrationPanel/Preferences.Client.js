@@ -7,31 +7,20 @@ const supabaseKey =
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export const addUserToUsersTable = async (
-	username,
-	email,
-	password,
-	preferences,
-) => {
+export const addPreferencesToTable = async (preferences) => {
 	try {
-		const { data, error } = await supabase.from('User').insert([
+		const { datas, errors } = await supabase.from('Preferences').insert([
 			{
-				username: username,
-				email: email,
-				password: sha256(password),
 				preferences: preferences,
 			},
 		]);
-
-		if (error) {
-			console.error('Error inserting user data:', error);
-			return { error };
+		if (errors) {
+			console.error('Error inserting preferences data:', errors);
+			return { errors };
 		}
-		console.log('User data inserted:');
-		window.location.href = 'http://localhost:3000/logIn';
-		return { data };
+		console.log('Preference data inserted:');
 	} catch (error) {
-		console.error('Error hashing password:', error);
+		console.error('Error adding the preferences:', error);
 		return { error };
 	}
 };
