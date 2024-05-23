@@ -10,17 +10,20 @@ import local from './icons/local.png';
 import adv from './icons/adv.png';
 import vacation from './icons/vacation.png';
 import Cards from './RecomendationCards';
+import { saveWaypoints } from './routingUtils';
+import 'leaflet-routing-machine';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
 const Dashboard = () => {
 	const [user] = useContext(Context);
 	const [location, setLocation] = useState(null);
 	const [markers, setMarkers] = useState([]);
-	const [travelMode, setTravelMode] = useState('walking'); // Domyślny tryb podróży
-	const [travelTime, setTravelTime] = useState(null); // Czas podróży
-
+	const [travelMode, setTravelMode] = useState('walking');
+	const [travelTime, setTravelTime] = useState(null);
+	const [waypointsText, setWaypointsText] = useState('');
 	useEffect(() => {
 		const map = L.map('map').setView([51.505, -0.09], 12);
-
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 20,
 			attribution:
@@ -64,7 +67,6 @@ const Dashboard = () => {
 			});
 		}
 		map.on('click', onMapClick);
-
 		if ('geolocation' in navigator) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
@@ -86,11 +88,32 @@ const Dashboard = () => {
 		} else {
 			console.error('Geolocation is not supported by this browser.');
 		}
+		L.Routing.control({
+			waypoints: [
+				L.latLng(50.314579, 18.873678),
+				L.latLng(50.317098, 18.90391),
+			],
+			routeWhileDragging: false,
+		})
+			.on('routesfound', function (e) {
+				const routes = e.routes;
+				const totalTimeInSeconds = routes[0].summary.totalTime;
+				const totalTimeInMinutes = Math.round(totalTimeInSeconds / 60);
+				setTravelTime(totalTimeInMinutes);
+			})
+			.addTo(map);
+
+		return () => {
+			map.off('click', onMapClick);
+		};
 	}, []);
 
 	const handleButtonClick = () => {
 		console.log('Button clicked!');
-		// Tutaj dodamy później funkcjonalność routingu
+		const waypoints = markers.map((marker) => marker.getLatLng());
+		const waypointsText = saveWaypoints(waypoints);
+		console.log('Waypoints:', waypointsText);
+		setWaypointsText(waypointsText);
 	};
 
 	const handleTravelModeChange = (event) => {
@@ -100,10 +123,13 @@ const Dashboard = () => {
 	return (
 		<div className="board">
 			<div className="grid">
-				<div className="g1" style={{ borderRadius:'2px', borderColor:'white'}}>
+				<div
+					className="g1"
+					style={{ borderRadius: '2px', borderColor: 'white' }}
+				>
 					<div
 						id="map"
-						style={{ height: '100%', width: '100%'}}
+						style={{ height: '100%', width: '100%' }}
 					></div>
 				</div>
 				<div className="g2">
@@ -207,7 +233,7 @@ const Dashboard = () => {
 						</button>
 					</div>
 					<p id="travel-time" style={{ textAlign: 'center' }}>
-						Total Travel Time: {travelTime}
+						Total Travel Time: {travelTime} min
 					</p>
 				</div>
 				<div className="g3">
@@ -227,7 +253,5 @@ const Dashboard = () => {
 		</div>
 	);
 };
-
-
 
 export default Dashboard;

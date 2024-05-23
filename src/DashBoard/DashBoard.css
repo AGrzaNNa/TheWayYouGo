@@ -55,3 +55,6 @@
     font-size: 25px;
 }
 
+/*#map .leaflet-routing-container {*/
+/*    display: none !important;*/
+/*}*/

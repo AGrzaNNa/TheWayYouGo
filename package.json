@@ -13,14 +13,17 @@
     "@mantine/carousel": "^7.9.2",
     "@mantine/core": "^7.9.2",
     "@supabase/supabase-js": "^2.43.2",
+    "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "js-sha256": "^0.11.0",
     "leaflet": "^1.9.3",
+    "leaflet-routing-machine": "^3.2.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
+    "stream-http": "^3.2.0",
     "web-vitals": "^4.0.0"
   },
   "devDependencies": {
