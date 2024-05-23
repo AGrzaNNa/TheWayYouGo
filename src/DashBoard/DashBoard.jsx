@@ -11,6 +11,7 @@ import adv from './icons/adv.png';
 import vacation from './icons/vacation.png';
 import Cards from './RecomendationCards';
 import { saveWaypoints } from './routingUtils';
+import { createRoutineMachineLayer } from './RoutingMachine.js';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
@@ -69,7 +70,6 @@ function ClickableMap({ markers, setMarkers, coordinates, setCoordinates }) {
 
 	return null;
 }
-
 const Dashboard = () => {
 	const [user] = useContext(Context);
 	const [markers, setMarkers] = useState([]);
@@ -77,6 +77,7 @@ const Dashboard = () => {
 	const [travelMode, setTravelMode] = useState('');
 	const [budget, setBudget] = useState('');
 	const [map, setMap] = useState(null); // State for map reference
+	const [routeWaypoints, setRouteWaypoints] = useState([]); // State for route waypoints
 
 	const handleTravelModeChange = (e) => {
 		setTravelMode(e.target.value);
@@ -91,6 +92,12 @@ const Dashboard = () => {
 		console.log('Travel Mode:', travelMode);
 		console.log('Budget:', budget);
 		console.log('Coordinates:', coordinates);
+
+		// Zapisanie wyniku funkcji saveWaypoints do stanu routeWaypoints
+		const waypointsText = saveWaypoints(coordinates);
+		console.log('Waypoints:', waypointsText);
+		setRouteWaypoints(waypointsText); // Aktualizacja stanu routeWaypoints
+		createRoutineMachineLayer(waypointsText);
 	};
 
 	const deleteMarker = (id, latlng, e) => {
@@ -153,6 +160,7 @@ const Dashboard = () => {
 							coordinates={coordinates}
 							setCoordinates={setCoordinates}
 						/>
+						{/* Przekazanie aktualnej listy punktów trasy do komponentu RoutingMachine */}
 						<RoutingMachine />
 					</MapContainer>
 				</div>

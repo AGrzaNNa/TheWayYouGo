@@ -12,6 +12,7 @@
   "dependencies": {
     "@mantine/carousel": "^7.9.2",
     "@mantine/core": "^7.9.2",
+    "@react-leaflet/core": "^2.1.0",
     "@supabase/supabase-js": "^2.43.2",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
