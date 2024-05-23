@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './DashBoard.css';
@@ -12,125 +12,149 @@ import vacation from './icons/vacation.png';
 import Cards from './RecomendationCards';
 import { saveWaypoints } from './routingUtils';
 import 'leaflet-routing-machine';
-import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+
+import {
+	Marker,
+	Popup,
+	MapContainer,
+	TileLayer,
+	useMapEvents,
+} from 'react-leaflet';
+
+import RoutingMachine from './RoutingMachine'; // Import the RoutingMachine component
+
+function LocationMarker() {
+	const [position, setPosition] = useState(null);
+
+	const map = useMapEvents({
+		locationfound(e) {
+			setPosition(e.latlng);
+			map.setView(e.latlng, map.getZoom());
+		},
+	});
+
+	const LeafIcon = L.Icon.extend({
+		options: {
+			iconSize: [40, 40],
+		},
+	});
+
+	const localIcon = new LeafIcon({
+		iconUrl: local,
+	});
+
+	useEffect(() => {
+		map.locate();
+	}, [map]);
+
+	return position === null ? null : (
+		<Marker position={position} icon={localIcon}>
+			<Popup>You are here</Popup>
+		</Marker>
+	);
+}
+
+function ClickableMap({ markers, setMarkers, coordinates, setCoordinates }) {
+	const map = useMapEvents({
+		click(e) {
+			const newMarker = {
+				id: markers.length + 1,
+				latlng: e.latlng,
+			};
+			setMarkers([...markers, newMarker]);
+			setCoordinates([...coordinates, e.latlng]);
+		},
+	});
+
+	return null;
+}
 
 const Dashboard = () => {
 	const [user] = useContext(Context);
-	const [location, setLocation] = useState(null);
 	const [markers, setMarkers] = useState([]);
-	const [travelMode, setTravelMode] = useState('walking');
-	const [travelTime, setTravelTime] = useState(null);
-	const [waypointsText, setWaypointsText] = useState('');
-	useEffect(() => {
-		const map = L.map('map').setView([51.505, -0.09], 12);
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 20,
-			attribution:
-				'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-		}).addTo(map);
+	const [coordinates, setCoordinates] = useState([]);
+	const [travelMode, setTravelMode] = useState('');
+	const [budget, setBudget] = useState('');
+	const [map, setMap] = useState(null); // State for map reference
 
-		const LeafIcon = L.Icon.extend({
-			options: {
-				iconSize: [38, 38],
-				shadowSize: [50, 64],
-			},
-		});
-		const locali = new LeafIcon({
-			iconUrl: local,
-		});
+	const handleTravelModeChange = (e) => {
+		setTravelMode(e.target.value);
+	};
 
-		const advi = new LeafIcon({
-			iconUrl: adv,
-		});
-
-		function onMapClick(e) {
-			const newMarker = L.marker(e.latlng, { icon: advi }).addTo(map);
-			setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
-
-			newMarker.bindPopup(`
-                <b>Coordinates:</b> ${e.latlng.toString()}<br>
-                <button id="delete-marker">Usuń</button>
-            `);
-
-			newMarker.on('popupopen', function () {
-				document
-					.getElementById('delete-marker')
-					.addEventListener('click', () => {
-						map.removeLayer(newMarker);
-						setMarkers((prevMarkers) =>
-							prevMarkers.filter(
-								(marker) => marker !== newMarker,
-							),
-						);
-					});
-			});
-		}
-		map.on('click', onMapClick);
-		if ('geolocation' in navigator) {
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					const { latitude, longitude } = position.coords;
-					setLocation({ lat: latitude, lng: longitude });
-
-					map.setView([latitude, longitude], 13);
-
-					const marker = L.marker([latitude, longitude], {
-						icon: locali,
-					}).addTo(map);
-
-					marker.bindPopup('<b>You are here</b><br>').openPopup();
-				},
-				(error) => {
-					console.error('Error getting user location:', error);
-				},
-			);
-		} else {
-			console.error('Geolocation is not supported by this browser.');
-		}
-		L.Routing.control({
-			waypoints: [
-				L.latLng(50.314579, 18.873678),
-				L.latLng(50.317098, 18.90391),
-			],
-			routeWhileDragging: false,
-		})
-			.on('routesfound', function (e) {
-				const routes = e.routes;
-				const totalTimeInSeconds = routes[0].summary.totalTime;
-				const totalTimeInMinutes = Math.round(totalTimeInSeconds / 60);
-				setTravelTime(totalTimeInMinutes);
-			})
-			.addTo(map);
-
-		return () => {
-			map.off('click', onMapClick);
-		};
-	}, []);
+	const handleBudgetChange = (e) => {
+		setBudget(e.target.value);
+	};
 
 	const handleButtonClick = () => {
 		console.log('Button clicked!');
-		const waypoints = markers.map((marker) => marker.getLatLng());
-		const waypointsText = saveWaypoints(waypoints);
-		console.log('Waypoints:', waypointsText);
-		setWaypointsText(waypointsText);
+		console.log('Travel Mode:', travelMode);
+		console.log('Budget:', budget);
+		console.log('Coordinates:', coordinates);
 	};
 
-	const handleTravelModeChange = (event) => {
-		setTravelMode(event.target.value);
+	const deleteMarker = (id, latlng, e) => {
+		e.stopPropagation();
+		setMarkers(markers.filter((marker) => marker.id !== id));
+		setCoordinates(coordinates.filter((coord) => coord !== latlng));
 	};
-	console.log(markers);
+
+	const advIcon = useMemo(() => {
+		const LeafIcon = L.Icon.extend({
+			options: {
+				iconSize: [40, 40],
+			},
+		});
+		return new LeafIcon({
+			iconUrl: adv,
+		});
+	}, []);
+
 	return (
 		<div className="board">
 			<div className="grid">
-				<div
-					className="g1"
-					style={{ borderRadius: '2px', borderColor: 'white' }}
-				>
-					<div
-						id="map"
+				<div className="g1">
+					<MapContainer
+						center={[51.505, -0.09]}
+						zoom={12}
 						style={{ height: '100%', width: '100%' }}
-					></div>
+						whenCreated={setMap} // Set map reference
+					>
+						<TileLayer
+							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+							url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+						/>
+						<LocationMarker />
+						{markers.map((marker) => (
+							<Marker
+								icon={advIcon}
+								key={marker.id}
+								position={marker.latlng}
+							>
+								<Popup>
+									Marker {marker.latlng.toString()} <br />
+									<button
+										onClick={(e) =>
+											deleteMarker(
+												marker.id,
+												marker.latlng,
+												e,
+											)
+										}
+									>
+										Delete
+									</button>
+								</Popup>
+							</Marker>
+						))}
+						<ClickableMap
+							markers={markers}
+							setMarkers={setMarkers}
+							coordinates={coordinates}
+							setCoordinates={setCoordinates}
+						/>
+						<RoutingMachine />
+					</MapContainer>
 				</div>
 				<div className="g2">
 					<div style={{ background: 'green', display: 'flex' }}>
@@ -210,6 +234,8 @@ const Dashboard = () => {
 						<p style={{ marginLeft: '10px' }}>Your Budget</p>
 						<input
 							style={{ marginLeft: '10px', marginTop: '-10px' }}
+							value={budget}
+							onChange={handleBudgetChange}
 						/>
 					</div>
 					<div
@@ -233,13 +259,13 @@ const Dashboard = () => {
 						</button>
 					</div>
 					<p id="travel-time" style={{ textAlign: 'center' }}>
-						Total Travel Time: {travelTime} min
+						{/*Total Travel Time: {travelTime} min*/}
 					</p>
 				</div>
 				<div className="g3">
 					<p className="text">
-						Your travel details will appear Here after submit your
-						journey
+						Your travel details will appear here after you submit
+						your journey
 					</p>
 					<img
 						src={vacation}
@@ -249,6 +275,14 @@ const Dashboard = () => {
 				<div className="g4">
 					<Cards />
 				</div>
+				<button
+					onClick={() => {
+						setMarkers([]);
+						setCoordinates([]);
+					}}
+				>
+					Clear All Markers
+				</button>
 			</div>
 		</div>
 	);
