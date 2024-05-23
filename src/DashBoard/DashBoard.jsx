@@ -9,13 +9,14 @@ import cycling from './icons/cycling.png';
 import local from './icons/local.png';
 import adv from './icons/adv.png';
 import vacation from './icons/vacation.png';
-import logo from '../RegistrationPanel/icons/logo.png';
-import Cards from './Carddata';
+import Cards from './RecomendationCards';
 
 const Dashboard = () => {
 	const [user] = useContext(Context);
 	const [location, setLocation] = useState(null);
 	const [markers, setMarkers] = useState([]);
+	const [travelMode, setTravelMode] = useState('walking'); // Domyślny tryb podróży
+	const [travelTime, setTravelTime] = useState(null); // Czas podróży
 
 	useEffect(() => {
 		const map = L.map('map').setView([51.505, -0.09], 12);
@@ -26,23 +27,17 @@ const Dashboard = () => {
 				'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 		}).addTo(map);
 
-		var LeafIcon = L.Icon.extend({
+		const LeafIcon = L.Icon.extend({
 			options: {
 				iconSize: [38, 38],
 				shadowSize: [50, 64],
 			},
 		});
-		var locali = new LeafIcon({
+		const locali = new LeafIcon({
 			iconUrl: local,
 		});
 
-		var LeafIcon2 = L.Icon.extend({
-			options: {
-				iconSize: [38, 38],
-				shadowSize: [50, 64],
-			},
-		});
-		var advi = new LeafIcon2({
+		const advi = new LeafIcon({
 			iconUrl: adv,
 		});
 
@@ -95,15 +90,20 @@ const Dashboard = () => {
 
 	const handleButtonClick = () => {
 		console.log('Button clicked!');
+		// Tutaj dodamy później funkcjonalność routingu
 	};
 
+	const handleTravelModeChange = (event) => {
+		setTravelMode(event.target.value);
+	};
+	console.log(markers);
 	return (
 		<div className="board">
 			<div className="grid">
-				<div className="g1">
+				<div className="g1" style={{ borderRadius:'2px', borderColor:'white'}}>
 					<div
 						id="map"
-						style={{ height: '100%', width: '100%' }}
+						style={{ height: '100%', width: '100%'}}
 					></div>
 				</div>
 				<div className="g2">
@@ -123,7 +123,13 @@ const Dashboard = () => {
 						}}
 					>
 						<label style={{ marginRight: '30px' }}>
-							<input type="radio" name="travelOption" value="1" />
+							<input
+								type="radio"
+								name="travelOption"
+								value="walking"
+								checked={travelMode === 'walking'}
+								onChange={handleTravelModeChange}
+							/>
 							<img
 								className="choice"
 								src={walking}
@@ -136,7 +142,13 @@ const Dashboard = () => {
 							/>
 						</label>
 						<label style={{ marginRight: '30px' }}>
-							<input type="radio" name="travelOption" value="2" />
+							<input
+								type="radio"
+								name="travelOption"
+								value="cycling"
+								checked={travelMode === 'cycling'}
+								onChange={handleTravelModeChange}
+							/>
 							<img
 								className="choice"
 								src={cycling}
@@ -149,7 +161,13 @@ const Dashboard = () => {
 							/>
 						</label>
 						<label>
-							<input type="radio" name="travelOption" value="3" />
+							<input
+								type="radio"
+								name="travelOption"
+								value="driving"
+								checked={travelMode === 'driving'}
+								onChange={handleTravelModeChange}
+							/>
 							<img
 								className="choice"
 								src={driving}
@@ -188,11 +206,14 @@ const Dashboard = () => {
 							Process
 						</button>
 					</div>
+					<p id="travel-time" style={{ textAlign: 'center' }}>
+						Total Travel Time: {travelTime}
+					</p>
 				</div>
 				<div className="g3">
 					<p className="text">
 						Your travel details will appear Here after submit your
-						journay
+						journey
 					</p>
 					<img
 						src={vacation}
@@ -206,5 +227,7 @@ const Dashboard = () => {
 		</div>
 	);
 };
+
+
 
 export default Dashboard;
