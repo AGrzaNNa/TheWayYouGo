@@ -1,18 +1,33 @@
-import React from 'react';
-import { createControlComponent } from '@react-leaflet/core';
+import React, { useEffect, useRef } from 'react';
+import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 
-export const createRoutineMachineLayer = (props) => {
-	console.log('Waypoints in RoutingMachine:', props);
-	return L.Routing.control({
-		waypoints: [
-			L.latLng(50.30813287769177, 18.88072967514745),
-			L.latLng(50.30681645463745, 18.921928405616203),
-		],
-	});
-};
+const RoutingMachine = ({ waypoints }) => {
+	const map = useMap();
+	const routingControlRef = useRef(null);
 
-const RoutingMachine = createControlComponent(createRoutineMachineLayer);
+	useEffect(() => {
+		if (routingControlRef.current) {
+			routingControlRef.current.setWaypoints(waypoints.map(({ lat, lng }) => L.latLng(lat, lng)));
+		} else {
+			routingControlRef.current = L.Routing.control({
+				waypoints: waypoints.map(({ lat, lng }) => L.latLng(lat, lng)),
+				lineOptions: {
+					styles: [{ color: '#6FA1EC', weight: 4 }]
+				},
+				waypointMode: 'snap',
+				show: false,
+				addWaypoints: false,
+				routeWhileDragging: true,
+				draggableWaypoints: true,
+				fitSelectedRoutes: true,
+				createMarker: () => null,
+			}).addTo(map);
+		}
+	}, [map, waypoints]);
+
+	return null;
+};
 
 export default RoutingMachine;

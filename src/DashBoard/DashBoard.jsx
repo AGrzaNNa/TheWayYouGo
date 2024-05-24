@@ -11,10 +11,9 @@ import adv from './icons/adv.png';
 import vacation from './icons/vacation.png';
 import Cards from './RecomendationCards';
 import { saveWaypoints } from './routingUtils';
-import { createRoutineMachineLayer } from './RoutingMachine.js';
+import RoutingMachine from './RoutingMachine'; // Import the RoutingMachine component
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
-
 import {
 	Marker,
 	Popup,
@@ -22,8 +21,6 @@ import {
 	TileLayer,
 	useMapEvents,
 } from 'react-leaflet';
-
-import RoutingMachine from './RoutingMachine'; // Import the RoutingMachine component
 
 function LocationMarker() {
 	const [position, setPosition] = useState(null);
@@ -70,13 +67,13 @@ function ClickableMap({ markers, setMarkers, coordinates, setCoordinates }) {
 
 	return null;
 }
+
 const Dashboard = () => {
 	const [user] = useContext(Context);
 	const [markers, setMarkers] = useState([]);
 	const [coordinates, setCoordinates] = useState([]);
 	const [travelMode, setTravelMode] = useState('');
 	const [budget, setBudget] = useState('');
-	const [map, setMap] = useState(null); // State for map reference
 	const [routeWaypoints, setRouteWaypoints] = useState([]); // State for route waypoints
 
 	const handleTravelModeChange = (e) => {
@@ -96,8 +93,7 @@ const Dashboard = () => {
 		// Zapisanie wyniku funkcji saveWaypoints do stanu routeWaypoints
 		const waypointsText = saveWaypoints(coordinates);
 		console.log('Waypoints:', waypointsText);
-		setRouteWaypoints(waypointsText); // Aktualizacja stanu routeWaypoints
-		createRoutineMachineLayer(waypointsText);
+		setRouteWaypoints(coordinates); // Aktualizacja stanu routeWaypoints
 	};
 
 	const deleteMarker = (id, latlng, e) => {
@@ -125,7 +121,6 @@ const Dashboard = () => {
 						center={[51.505, -0.09]}
 						zoom={12}
 						style={{ height: '100%', width: '100%' }}
-						whenCreated={setMap} // Set map reference
 					>
 						<TileLayer
 							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -161,7 +156,7 @@ const Dashboard = () => {
 							setCoordinates={setCoordinates}
 						/>
 						{/* Przekazanie aktualnej listy punktów trasy do komponentu RoutingMachine */}
-						<RoutingMachine />
+						<RoutingMachine waypoints={routeWaypoints} />
 					</MapContainer>
 				</div>
 				<div className="g2">
@@ -283,14 +278,6 @@ const Dashboard = () => {
 				<div className="g4">
 					<Cards />
 				</div>
-				<button
-					onClick={() => {
-						setMarkers([]);
-						setCoordinates([]);
-					}}
-				>
-					Clear All Markers
-				</button>
 			</div>
 		</div>
 	);
