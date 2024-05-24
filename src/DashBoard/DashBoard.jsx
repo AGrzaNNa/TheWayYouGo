@@ -68,6 +68,16 @@ function ClickableMap({ markers, setMarkers, coordinates, setCoordinates }) {
 	return null;
 }
 
+function Details() {
+
+	return (
+		<p className="text">
+			Your travel details will appear here after you submit
+			your journey
+		</p>
+	);
+}
+
 const Dashboard = () => {
 	const [user] = useContext(Context);
 	const [markers, setMarkers] = useState([]);
@@ -266,10 +276,7 @@ const Dashboard = () => {
 					</p>
 				</div>
 				<div className="g3">
-					<p className="text">
-						Your travel details will appear here after you submit
-						your journey
-					</p>
+					<Details />
 					<img
 						src={vacation}
 						style={{ width: '150px', height: '150px' }}
