@@ -1,9 +1,6 @@
 import './Registration.css';
-import mount2 from '../HeroSection/assets/mount2.png';
 import logo from './icons/logo.png';
 import React, { useState } from 'react';
-
-import { supabase } from './User.Client';
 import { addUserToUsersTable } from './User.Client';
 
 //MANTINE
@@ -23,7 +20,6 @@ import mount from './icons/mountain.png';
 import winter from './icons/winter.png';
 import sea from './icons/sea.png';
 import image from '../HeroSection/assets/image.png';
-import { addPreferencesToTable } from './Preferences.Client';
 
 export function ImageCheckbox({
 	checked,
