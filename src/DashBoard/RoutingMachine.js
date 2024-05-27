@@ -3,46 +3,40 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 
-const RoutingMachine = ({ waypoints }) => {
+const RoutingMachine = ({ waypoints, travelMode }) => {
+
 	const map = useMap();
 	const routingControlRef = useRef(null);
 
-	useEffect(() => {
-		const options = { profile: 'mapbox/walking' }; //driving //cycling
 		if (routingControlRef.current) {
-			routingControlRef.current.setWaypoints(
-				waypoints.map(({ lat, lng }) => L.latLng(lat, lng)),
-			);
-			// Replace the existing router with Mapbox router
-			routingControlRef.current.getRouter().options.router =
-				L.Routing.mapbox(
-					'pk.eyJ1IjoiYWdyemFuYTg5ODkiLCJhIjoiY2x3a2pkc25oMGYydDJtcnk0NTk1bWR4MiJ9.WQQWiNq-RyvrB65QceI4AQ', // Replace "YOUR_MAPBOX_API_KEY" with your actual Mapbox API key
-					options,
-				);
-		} else {
-			routingControlRef.current = L.Routing.control({
-				waypoints: waypoints.map(({ lat, lng }) => L.latLng(lat, lng)),
-				lineOptions: {
-					styles: [{ color: '#6FA1EC', weight: 4 }],
-				},
-				show: false,
-				addWaypoints: false,
-				routeWhileDragging: true,
-				draggableWaypoints: true,
-				fitSelectedRoutes: true,
-				createMarker: () => null,
-				waypointMode: 'snap',
-				// Set the router to Mapbox router
-				router: L.Routing.mapbox(
-					'pk.eyJ1IjoiYWdyemFuYTg5ODkiLCJhIjoiY2x3a2pkc25oMGYydDJtcnk0NTk1bWR4MiJ9.WQQWiNq-RyvrB65QceI4AQ', // Replace "YOUR_MAPBOX_API_KEY" with your actual Mapbox API key
-					options,
-				),
-				formatter: new L.Routing.Formatter(),
-			}).addTo(map);
+			// Remove the existing routing control from the map
+			map.removeControl(routingControlRef.current);
 		}
-	}, [map, waypoints]);
+		// Create a new instance of the routing control
+		routingControlRef.current = L.Routing.control({
+			waypoints: waypoints.map(({ lat, lng }) => L.latLng(lat, lng)),
+			lineOptions: {
+				styles: [{ color: '#6FA1EC', weight: 4 }],
+			},
+			show: false,
+			addWaypoints: false,
+			routeWhileDragging: true,
+			draggableWaypoints: true,
+			fitSelectedRoutes: true,
+			createMarker: () => null,
+			waypointMode: 'snap',
+			router: L.Routing.mapbox(
+				'pk.eyJ1IjoiYWdyemFuYTg5ODkiLCJhIjoiY2x3a2pkc25oMGYydDJtcnk0NTk1bWR4MiJ9.WQQWiNq-RyvrB65QceI4AQ',
+				{ profile: 'mapbox/' + travelMode }
+			),
+			formatter: new L.Routing.Formatter(),
+		}).addTo(map);
 
-	return null;
+		return () => {
+			if (routingControlRef.current) {
+				map.removeControl(routingControlRef.current);
+			}
+		};
 };
 
 export default RoutingMachine;

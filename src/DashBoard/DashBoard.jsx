@@ -82,11 +82,12 @@ const Dashboard = () => {
 	const [user] = useContext(Context);
 	const [markers, setMarkers] = useState([]);
 	const [coordinates, setCoordinates] = useState([]);
-	const [travelMode, setTravelMode] = useState('');
+	const [travelMode, setTravelMode] = useState('driving');
 	const [budget, setBudget] = useState('');
 	const [routeWaypoints, setRouteWaypoints] = useState([]); // State for route waypoints
 
 	const handleTravelModeChange = (e) => {
+		console.log(e.target.value)
 		setTravelMode(e.target.value);
 	};
 
@@ -166,7 +167,7 @@ const Dashboard = () => {
 							setCoordinates={setCoordinates}
 						/>
 						{/* Przekazanie aktualnej listy punktów trasy do komponentu RoutingMachine */}
-						<RoutingMachine waypoints={routeWaypoints} />
+						<RoutingMachine waypoints={routeWaypoints} travelMode={travelMode}/>
 					</MapContainer>
 				</div>
 				<div className="g2">
